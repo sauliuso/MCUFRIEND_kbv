@@ -184,6 +184,8 @@ uint16_t MCUFRIEND_kbv::readID(void)
     ret = readReg(0);           //forces a reset() if called before begin()
     if (ret == 0x5408)          //the SPFD5408 fails the 0xD3D3 test.
         return 0x5408;
+    if (ret == 0x8230)          // ?? perhaps the UC8230 fails the 0xD3D3 test.
+        return 0x8230;
     if (ret == 0x5420)          //the SPFD5420 fails the 0xD3D3 test.
         return 0x5420;
     if (ret == 0x8989)          //SSD1289 is always 8989
@@ -1632,6 +1634,9 @@ case 0x4532:    // thanks Leodino
         *p16 = 320;
         break;
 
+    case 0x8230:
+        _lcd_capable = 0 | REV_SCREEN | INVERT_GS | INVERT_RGB;
+        goto common_9320;
     case 0x5408:
         _lcd_capable = 0 | REV_SCREEN | READ_BGR | INVERT_GS;
         goto common_9320;
